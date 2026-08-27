@@ -67,10 +67,11 @@ where $\alpha = 10, \beta = 10$ (Empirical Bayes prior towards 50%).
 
 ### 2. +EV Trade Execution Trigger
 $$\text{Expected Value (EV)} = (P_{\text{model}} \times \text{Decimal Odds}) - 1.0$$
-A trade is executed only when $\text{EV} \ge +3\%$.
+A trade is executed only when $\text{EV} \ge +0.03$ (+3% edge threshold).
 
 ### 3. Position Sizing via Fractional Kelly Criterion
-$$f^* = \min\left( \frac{P_{\text{model}} \times (\text{Odds} - 1) - (1 - P_{\text{model}})}{\text{Odds} - 1} \times 0.25, \; 5\% \text{ bankroll cap} \right)$$
+$$f^* = \min\left( \frac{P_{\text{model}} \times (\text{Odds} - 1) - (1 - P_{\text{model}})}{\text{Odds} - 1} \times 0.25, \; 0.05 \right)$$
+*(where $0.05$ represents a 5% maximum bankroll cap per match)*
 
 ---
 
