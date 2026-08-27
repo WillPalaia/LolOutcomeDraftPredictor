@@ -1,0 +1,58 @@
+﻿# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# CatBoost & TensorBoard training logs
+catboost_info/
+*.tfevents*
+
+# Data & Runtime generated files
+data/raw/*.csv
+data/cache/*
+data/processed/*
+data/bot/*.db
+data/screenshots/*.png
+!data/raw/.gitkeep
+!data/cache/.gitkeep
+!data/processed/.gitkeep
+!data/bot/.gitkeep
+!data/screenshots/.gitkeep
+
+# Environment variables & secrets
+.env
+*.pem
+*.key
+
+# IDEs & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

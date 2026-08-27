@@ -1,0 +1,1692 @@
+{
+  "Aatrox": {
+    "class": "Fighter",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Ahri": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.75,
+    "true_ratio": 0.2,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Akali": {
+    "class": "Assassin",
+    "ad_ratio": 0.25,
+    "ap_ratio": 0.75,
+    "true_ratio": 0.0,
+    "cc_score": 2,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Akshan": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 1,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 5
+  },
+  "Alistar": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Ambessa": {
+    "class": "Fighter",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Amumu": {
+    "class": "Tank",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.05,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Anivia": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Annie": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Aphelios": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Ashe": {
+    "class": "Marksman",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Aurelion Sol": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 10
+  },
+  "Aurora": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Azir": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Bard": {
+    "class": "Support",
+    "ad_ratio": 0.2,
+    "ap_ratio": 0.8,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Bel'Veth": {
+    "class": "Fighter",
+    "ad_ratio": 0.75,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.2,
+    "cc_score": 5,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Blitzcrank": {
+    "class": "Tank",
+    "ad_ratio": 0.2,
+    "ap_ratio": 0.8,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Brand": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Braum": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Briar": {
+    "class": "Fighter",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Caitlyn": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 2,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Camille": {
+    "class": "Fighter",
+    "ad_ratio": 0.45,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.5,
+    "cc_score": 6,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Cassiopeia": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Cho'Gath": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.6,
+    "true_ratio": 0.3,
+    "cc_score": 7,
+    "engage_score": 4,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Corki": {
+    "class": "Marksman",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.05,
+    "cc_score": 1,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Darius": {
+    "class": "Fighter",
+    "ad_ratio": 0.6,
+    "ap_ratio": 0.0,
+    "true_ratio": 0.4,
+    "cc_score": 4,
+    "engage_score": 4,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Diana": {
+    "class": "Assassin",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Draven": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 5
+  },
+  "Dr. Mundo": {
+    "class": "Tank",
+    "ad_ratio": 0.7,
+    "ap_ratio": 0.3,
+    "true_ratio": 0.0,
+    "cc_score": 2,
+    "engage_score": 4,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Ekko": {
+    "class": "Assassin",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Elise": {
+    "class": "Mage",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 4
+  },
+  "Evelynn": {
+    "class": "Assassin",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Ezreal": {
+    "class": "Marksman",
+    "ad_ratio": 0.7,
+    "ap_ratio": 0.3,
+    "true_ratio": 0.0,
+    "cc_score": 1,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Fiddlesticks": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Fiora": {
+    "class": "Fighter",
+    "ad_ratio": 0.5,
+    "ap_ratio": 0.0,
+    "true_ratio": 0.5,
+    "cc_score": 3,
+    "engage_score": 5,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Fizz": {
+    "class": "Assassin",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Galio": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Gangplank": {
+    "class": "Fighter",
+    "ad_ratio": 0.75,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.15,
+    "cc_score": 3,
+    "engage_score": 4,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Garen": {
+    "class": "Fighter",
+    "ad_ratio": 0.8,
+    "ap_ratio": 0.0,
+    "true_ratio": 0.2,
+    "cc_score": 3,
+    "engage_score": 4,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Gnar": {
+    "class": "Fighter",
+    "ad_ratio": 0.75,
+    "ap_ratio": 0.2,
+    "true_ratio": 0.05,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Gragas": {
+    "class": "Mage",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Graves": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 2,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Gwen": {
+    "class": "Fighter",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.75,
+    "true_ratio": 0.2,
+    "cc_score": 3,
+    "engage_score": 5,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Hecarim": {
+    "class": "Fighter",
+    "ad_ratio": 0.8,
+    "ap_ratio": 0.2,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Heimerdinger": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Hwei": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Illaoi": {
+    "class": "Fighter",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 3,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Irelia": {
+    "class": "Fighter",
+    "ad_ratio": 0.7,
+    "ap_ratio": 0.2,
+    "true_ratio": 0.1,
+    "cc_score": 5,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Ivern": {
+    "class": "Support",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Janna": {
+    "class": "Support",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Jarvan IV": {
+    "class": "Tank",
+    "ad_ratio": 0.8,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.05,
+    "cc_score": 8,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Jax": {
+    "class": "Fighter",
+    "ad_ratio": 0.55,
+    "ap_ratio": 0.45,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Jayce": {
+    "class": "Fighter",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Jhin": {
+    "class": "Marksman",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Jinx": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "K'Sante": {
+    "class": "Tank",
+    "ad_ratio": 0.65,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.3,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Kai'Sa": {
+    "class": "Marksman",
+    "ad_ratio": 0.5,
+    "ap_ratio": 0.45,
+    "true_ratio": 0.05,
+    "cc_score": 1,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Kalista": {
+    "class": "Marksman",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.05,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 5
+  },
+  "Karma": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 5
+  },
+  "Karthus": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Kassadin": {
+    "class": "Assassin",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 10
+  },
+  "Katarina": {
+    "class": "Assassin",
+    "ad_ratio": 0.35,
+    "ap_ratio": 0.65,
+    "true_ratio": 0.0,
+    "cc_score": 1,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Kayle": {
+    "class": "Fighter",
+    "ad_ratio": 0.3,
+    "ap_ratio": 0.65,
+    "true_ratio": 0.05,
+    "cc_score": 2,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 10
+  },
+  "Kayn": {
+    "class": "Fighter",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Kennen": {
+    "class": "Mage",
+    "ad_ratio": 0.15,
+    "ap_ratio": 0.85,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 9,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Kha'Zix": {
+    "class": "Assassin",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Kindred": {
+    "class": "Marksman",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Kled": {
+    "class": "Fighter",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Kog'Maw": {
+    "class": "Marksman",
+    "ad_ratio": 0.45,
+    "ap_ratio": 0.5,
+    "true_ratio": 0.05,
+    "cc_score": 3,
+    "engage_score": 1,
+    "range_type": "Ranged",
+    "scaling_score": 10
+  },
+  "LeBlanc": {
+    "class": "Assassin",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Lee Sin": {
+    "class": "Fighter",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Leona": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Lillia": {
+    "class": "Fighter",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.85,
+    "true_ratio": 0.1,
+    "cc_score": 7,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Lissandra": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Lucian": {
+    "class": "Marksman",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 1,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Lulu": {
+    "class": "Support",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Lux": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Malphite": {
+    "class": "Tank",
+    "ad_ratio": 0.2,
+    "ap_ratio": 0.8,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Malzahar": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Maokai": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Master Yi": {
+    "class": "Assassin",
+    "ad_ratio": 0.65,
+    "ap_ratio": 0.0,
+    "true_ratio": 0.35,
+    "cc_score": 1,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Milio": {
+    "class": "Support",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Miss Fortune": {
+    "class": "Marksman",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Mordekaiser": {
+    "class": "Fighter",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Morgana": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Naafiri": {
+    "class": "Assassin",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 2,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Nami": {
+    "class": "Support",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Nasus": {
+    "class": "Fighter",
+    "ad_ratio": 0.7,
+    "ap_ratio": 0.3,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 4,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Nautilus": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Neeko": {
+    "class": "Mage",
+    "ad_ratio": 0.15,
+    "ap_ratio": 0.85,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Nidalee": {
+    "class": "Mage",
+    "ad_ratio": 0.15,
+    "ap_ratio": 0.85,
+    "true_ratio": 0.0,
+    "cc_score": 1,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 4
+  },
+  "Nilah": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Nocturne": {
+    "class": "Assassin",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Nunu & Willump": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Olaf": {
+    "class": "Fighter",
+    "ad_ratio": 0.75,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.2,
+    "cc_score": 3,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Orianna": {
+    "class": "Mage",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Ornn": {
+    "class": "Tank",
+    "ad_ratio": 0.3,
+    "ap_ratio": 0.6,
+    "true_ratio": 0.1,
+    "cc_score": 9,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Pantheon": {
+    "class": "Fighter",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Poppy": {
+    "class": "Tank",
+    "ad_ratio": 0.65,
+    "ap_ratio": 0.35,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Pyke": {
+    "class": "Support",
+    "ad_ratio": 0.65,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.3,
+    "cc_score": 7,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 4
+  },
+  "Qiyana": {
+    "class": "Assassin",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Quinn": {
+    "class": "Marksman",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Rakan": {
+    "class": "Support",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Rammus": {
+    "class": "Tank",
+    "ad_ratio": 0.2,
+    "ap_ratio": 0.8,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Rek'Sai": {
+    "class": "Fighter",
+    "ad_ratio": 0.75,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.15,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Rell": {
+    "class": "Tank",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Renata Glasc": {
+    "class": "Support",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Renekton": {
+    "class": "Fighter",
+    "ad_ratio": 0.8,
+    "ap_ratio": 0.2,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Rengar": {
+    "class": "Assassin",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Riven": {
+    "class": "Fighter",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Rumble": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Ryze": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Samira": {
+    "class": "Marksman",
+    "ad_ratio": 0.9,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Sejuani": {
+    "class": "Tank",
+    "ad_ratio": 0.2,
+    "ap_ratio": 0.8,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Senna": {
+    "class": "Support",
+    "ad_ratio": 0.8,
+    "ap_ratio": 0.2,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 10
+  },
+  "Seraphine": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Sett": {
+    "class": "Fighter",
+    "ad_ratio": 0.7,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.25,
+    "cc_score": 7,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Shaco": {
+    "class": "Assassin",
+    "ad_ratio": 0.5,
+    "ap_ratio": 0.5,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 5,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Shen": {
+    "class": "Tank",
+    "ad_ratio": 0.35,
+    "ap_ratio": 0.65,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Shyvana": {
+    "class": "Fighter",
+    "ad_ratio": 0.35,
+    "ap_ratio": 0.65,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Singed": {
+    "class": "Tank",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Sion": {
+    "class": "Tank",
+    "ad_ratio": 0.75,
+    "ap_ratio": 0.25,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Sivir": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 1,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Skarner": {
+    "class": "Tank",
+    "ad_ratio": 0.6,
+    "ap_ratio": 0.4,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Smolder": {
+    "class": "Marksman",
+    "ad_ratio": 0.7,
+    "ap_ratio": 0.1,
+    "true_ratio": 0.2,
+    "cc_score": 2,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 10
+  },
+  "Sona": {
+    "class": "Support",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Soraka": {
+    "class": "Support",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 2,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Swain": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Sylas": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Syndra": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Tahm Kench": {
+    "class": "Tank",
+    "ad_ratio": 0.1,
+    "ap_ratio": 0.9,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Taliyah": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Talon": {
+    "class": "Assassin",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 2,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Taric": {
+    "class": "Support",
+    "ad_ratio": 0.2,
+    "ap_ratio": 0.8,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 5,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Teemo": {
+    "class": "Mage",
+    "ad_ratio": 0.15,
+    "ap_ratio": 0.85,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 2,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Thresh": {
+    "class": "Support",
+    "ad_ratio": 0.25,
+    "ap_ratio": 0.75,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 6
+  },
+  "Tristana": {
+    "class": "Marksman",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Trundle": {
+    "class": "Fighter",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 5,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Tryndamere": {
+    "class": "Fighter",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 3,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Twisted Fate": {
+    "class": "Mage",
+    "ad_ratio": 0.45,
+    "ap_ratio": 0.55,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Twitch": {
+    "class": "Marksman",
+    "ad_ratio": 0.65,
+    "ap_ratio": 0.2,
+    "true_ratio": 0.15,
+    "cc_score": 3,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Udyr": {
+    "class": "Fighter",
+    "ad_ratio": 0.5,
+    "ap_ratio": 0.5,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 6,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Urgot": {
+    "class": "Fighter",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.1,
+    "cc_score": 6,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Varus": {
+    "class": "Marksman",
+    "ad_ratio": 0.6,
+    "ap_ratio": 0.4,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Vayne": {
+    "class": "Marksman",
+    "ad_ratio": 0.4,
+    "ap_ratio": 0.0,
+    "true_ratio": 0.6,
+    "cc_score": 4,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 10
+  },
+  "Veigar": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 10
+  },
+  "Vel'Koz": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.75,
+    "true_ratio": 0.2,
+    "cc_score": 6,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Vex": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 8,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Vi": {
+    "class": "Fighter",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Viego": {
+    "class": "Assassin",
+    "ad_ratio": 0.8,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.05,
+    "cc_score": 5,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Viktor": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Vladimir": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 2,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 10
+  },
+  "Volibear": {
+    "class": "Fighter",
+    "ad_ratio": 0.45,
+    "ap_ratio": 0.55,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Warwick": {
+    "class": "Fighter",
+    "ad_ratio": 0.4,
+    "ap_ratio": 0.6,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 5
+  },
+  "Wukong": {
+    "class": "Fighter",
+    "ad_ratio": 0.85,
+    "ap_ratio": 0.15,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Xayah": {
+    "class": "Marksman",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Xerath": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Xin Zhao": {
+    "class": "Fighter",
+    "ad_ratio": 0.8,
+    "ap_ratio": 0.2,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 8,
+    "range_type": "Melee",
+    "scaling_score": 6
+  },
+  "Yasuo": {
+    "class": "Fighter",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Yone": {
+    "class": "Assassin",
+    "ad_ratio": 0.65,
+    "ap_ratio": 0.25,
+    "true_ratio": 0.1,
+    "cc_score": 7,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 9
+  },
+  "Yorick": {
+    "class": "Fighter",
+    "ad_ratio": 0.8,
+    "ap_ratio": 0.2,
+    "true_ratio": 0.0,
+    "cc_score": 4,
+    "engage_score": 4,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Yuumi": {
+    "class": "Support",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 6,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Zac": {
+    "class": "Tank",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 9,
+    "engage_score": 9,
+    "range_type": "Melee",
+    "scaling_score": 8
+  },
+  "Zed": {
+    "class": "Assassin",
+    "ad_ratio": 0.95,
+    "ap_ratio": 0.05,
+    "true_ratio": 0.0,
+    "cc_score": 2,
+    "engage_score": 7,
+    "range_type": "Melee",
+    "scaling_score": 7
+  },
+  "Zeri": {
+    "class": "Marksman",
+    "ad_ratio": 0.65,
+    "ap_ratio": 0.35,
+    "true_ratio": 0.0,
+    "cc_score": 2,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 9
+  },
+  "Ziggs": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 5,
+    "engage_score": 3,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Zilean": {
+    "class": "Support",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 7,
+    "engage_score": 4,
+    "range_type": "Ranged",
+    "scaling_score": 8
+  },
+  "Zoe": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.85,
+    "true_ratio": 0.1,
+    "cc_score": 6,
+    "engage_score": 5,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  },
+  "Zyra": {
+    "class": "Mage",
+    "ad_ratio": 0.05,
+    "ap_ratio": 0.95,
+    "true_ratio": 0.0,
+    "cc_score": 8,
+    "engage_score": 6,
+    "range_type": "Ranged",
+    "scaling_score": 7
+  }
+}

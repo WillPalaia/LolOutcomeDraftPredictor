@@ -1,0 +1,15 @@
+[Unit]
+Description=LoL +EV Draft Autonomous Trading Bot Service
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/LolOutcomePredictFromDraft
+EnvironmentFile=/home/ubuntu/LolOutcomePredictFromDraft/.env
+ExecStart=/home/ubuntu/LolOutcomePredictFromDraft/venv/bin/python run_bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

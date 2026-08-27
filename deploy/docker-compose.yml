@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  lol-draft-bot:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: lol-draft-bot
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    volumes:
+      - ../data/bot:/app/data/bot
+      - ../config:/app/config
+    environment:
+      - PYTHONUNBUFFERED=1

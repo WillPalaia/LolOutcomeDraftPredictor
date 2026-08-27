@@ -1,0 +1,30 @@
+# LoL Draft +EV Autonomous Trading Bot Configuration
+
+# Discord Webhook (Can also be provided via DISCORD_WEBHOOK_URL env var)
+discord_webhook_url: ""
+
+# Portfolio & Financial Constraints
+initial_bankroll: 10000.0
+db_path: "data/bot/paper_portfolio.db"
+dry_run: true  # True = Paper Trading, False = Live Execution
+
+# Quantitative Trade Execution Rules
+ev_threshold: 0.035        # Minimum 3.5% EV edge to trigger trade
+kelly_fraction: 0.20      # 1/5th Kelly Criterion Sizing
+max_bet_fraction: 0.035   # Hard risk cap: 3.5% bankroll per match
+side_bias_elo: 32.0       # Dynamic Blue-side advantage rating
+
+# Safety Circuit Breakers
+max_daily_drawdown_pct: 10.0  # Pause trading if daily drawdown exceeds 10%
+
+# Polling & Leagues to Monitor
+poll_interval_seconds: 30
+target_leagues:
+  - "LCK"
+  - "LPL"
+  - "LEC"
+  - "LCS"
+  - "MSI"
+  - "WORLDS"
+  - "WLDs"
+  - "EWC"
