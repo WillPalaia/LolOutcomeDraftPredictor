@@ -75,11 +75,27 @@ You will immediately receive a color-coded **+EV Trade Signal** embed notificati
 
 | Action | Command |
 | :--- | :--- |
-| **View Live Stream Logs** | `sudo journalctl -u lol-draft-bot.service -f` |
+| **Pull Latest Code & Restart** | `git pull origin main && sudo systemctl restart lol-draft-bot.service` |
+| **View Live Bot Logs** | `sudo journalctl -u lol-draft-bot.service -f` |
 | **Check Bot Process Status** | `sudo systemctl status lol-draft-bot.service` |
 | **Restart Bot Daemon** | `sudo systemctl restart lol-draft-bot.service` |
 | **Stop Bot** | `sudo systemctl stop lol-draft-bot.service` |
 | **View Portfolio Performance** | `./venv/bin/python run_bot.py --status` |
+
+---
+
+## 🔄 Automatic Auto-Updating (Optional)
+
+If you want the VPS to automatically check for new commits on GitHub and auto-restart without needing to SSH in:
+
+1. Make the auto-updater script executable:
+   ```bash
+   chmod +x deploy/auto_update.sh
+   ```
+2. Add a 5-minute cron job:
+   ```bash
+   (crontab -l 2>/dev/null; echo "*/5 * * * * /home/ubuntu/LolOutcomePredictFromDraft/deploy/auto_update.sh >> /home/ubuntu/auto_update.log 2>&1") | crontab -
+   ```
 
 ---
 
@@ -89,3 +105,4 @@ You will immediately receive a color-coded **+EV Trade Signal** embed notificati
 * **Fractional Kelly Sizing:** 1/5th Kelly with a **3.5% maximum bankroll cap per match**.
 * **Daily Stop-Loss Circuit Breaker:** Pauses trading automatically if cumulative daily drawdown exceeds **10%**.
 * **Systemd Auto-Restart:** If the VPS reboots or network disconnects, the bot automatically restarts and resumes monitoring.
+
