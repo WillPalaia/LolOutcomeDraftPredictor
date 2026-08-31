@@ -1,4 +1,4 @@
-﻿# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *.class
@@ -46,13 +46,24 @@ data/screenshots/*.png
 !data/bot/.gitkeep
 !data/screenshots/.gitkeep
 
-# Environment variables & secrets
+# Environment variables, credentials & secrets
 .env
+.env.*
+!.env.example
 *.pem
 *.key
+*.pub
+*.ppk
+*.id_*
+id_*
+*secret*
+*credential*
+*.sqlite*
+*.log
 
 # IDEs & OS
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+
