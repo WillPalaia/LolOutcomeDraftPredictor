@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # =============================================================================
 # 🔄 Autonomous Git Auto-Updater for LoL Draft Bot VPS
 # Automatically checks for remote git updates on main, pulls them, and restarts the service.
