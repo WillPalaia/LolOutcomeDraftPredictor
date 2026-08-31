@@ -63,30 +63,39 @@ class DiscordNotifier:
         is_dry_run: bool = True
     ) -> bool:
         """
-        Sends rich trade signal embed for a detected +EV opportunity.
+        Sends rich trade signal embed ONLY when an actual bet is placed.
+        Explicitly states what team was bet on vs who right at draft completion.
         """
         p_target = p_final_blue if recommended_side == "Blue" else (1.0 - p_final_blue)
         odds_target = market_odds_blue if recommended_side == "Blue" else market_odds_red
         ev_target = ev_blue if recommended_side == "Blue" else ev_red
         target_team = blue_team if recommended_side == "Blue" else red_team
+        opposing_team = red_team if recommended_side == "Blue" else blue_team
+        stake_pct = (stake_usd / max(1.0, bankroll)) * 100.0
         
         b_picks_str = f"🛡️ **Top:** {blue_picks.get('top', '-')}\n🌿 **Jng:** {blue_picks.get('jng', '-')}\n⚡ **Mid:** {blue_picks.get('mid', '-')}\n🏹 **Bot:** {blue_picks.get('bot', '-')}\n💖 **Sup:** {blue_picks.get('sup', '-')}"
         r_picks_str = f"🛡️ **Top:** {red_picks.get('top', '-')}\n🌿 **Jng:** {red_picks.get('jng', '-')}\n⚡ **Mid:** {red_picks.get('mid', '-')}\n🏹 **Bot:** {red_picks.get('bot', '-')}\n💖 **Sup:** {red_picks.get('sup', '-')}"
         
-        status_tag = "🧪 [PAPER TRADE / DRY RUN]" if is_dry_run else "🚨 [LIVE TRADE EXECUTED]"
+        status_tag = "🧪 [PAPER BET PLACED]" if is_dry_run else "🚨 [LIVE BET EXECUTED]"
         color = 0x00FF7F if recommended_side == "Blue" else 0xFF4500 # SpringGreen for Blue, OrangeRed for Red
         
         embed = {
-            "title": f"{status_tag} +EV Trade Signal on {target_team}!",
-            "description": f"**League:** `{league.upper()}` | **Match:** `{blue_team} (Blue)` vs `{red_team} (Red)`\n**Action:** Placed **${stake_usd:,.2f}** on **{target_team}** @ `{odds_target:.2f}` odds ({stake_usd/bankroll*100:.1f}% of Bankroll)",
+            "title": f"{status_tag} {target_team} vs {opposing_team} ({league.upper()})",
+            "description": (
+                f"**Match:** `{blue_team} (Blue)` vs `{red_team} (Red)` | **League:** `{league.upper()}`\n"
+                f"**Action:** 🎯 **Placed ${stake_usd:,.2f} on {target_team}** @ `{odds_target:.2f}` odds\n"
+                f"**Timing:** ⏱️ **Draft Finalized (Pre-Game)** — Bet locked before match start."
+            ),
             "color": color,
             "fields": [
                 {
-                    "name": "📊 Model Quantitative Edge",
+                    "name": "📊 Bet & Value Details",
                     "value": (
-                        f"• **Target Team:** `{target_team}` ({recommended_side} Side)\n"
-                        f"• **True Win Prob:** `{p_target*100:.1f}%`\n"
-                        f"• **Market Implied:** `{(1.0/odds_target)*100:.1f}%` (Odds: `{odds_target:.2f}`)\n"
+                        f"• **Team Bet On:** `{target_team}` ({recommended_side} Side)\n"
+                        f"• **Opponent:** `{opposing_team}`\n"
+                        f"• **Wager Stake:** `${stake_usd:,.2f}` ({stake_pct:.1f}% of Bankroll)\n"
+                        f"• **Decimal Odds:** `{odds_target:.2f}` (Implied: `{(1.0/odds_target)*100:.1f}%`)\n"
+                        f"• **Model Win Probability:** `{p_target*100:.1f}%`\n"
                         f"• **Expected Value (EV):** `+{ev_target*100:.2f}%` 🎯\n"
                         f"• **Draft Shift (Δ):** `{draft_delta*100:+.2f}%`"
                     ),
@@ -103,8 +112,8 @@ class DiscordNotifier:
                     "inline": True
                 },
                 {
-                    "name": "💼 Current Portfolio State",
-                    "value": f"• **Total Bankroll:** `${bankroll:,.2f}`\n• **Allocated Stake:** `${stake_usd:,.2f}`",
+                    "name": "💼 Current Bankroll",
+                    "value": f"`${bankroll:,.2f}`",
                     "inline": False
                 }
             ],
@@ -131,51 +140,16 @@ class DiscordNotifier:
         total_trades: int
     ) -> bool:
         """
-        Sends settlement update when a match concludes.
+        Sends settlement update only if configured.
         """
-        is_win = (profit > 0)
-        color = 0x2ECC71 if is_win else 0xE74C3C # Green for win, Red for loss
-        emoji = "🎉 PROFIT SETTLED" if is_win else "📉 LOSS RECORDED"
-        target_team = blue_team if side_bet == "Blue" else red_team
-        
-        embed = {
-            "title": f"{emoji}: {target_team} ({side_bet})",
-            "description": f"**Match:** `{blue_team}` vs `{red_team}` ({league.upper()})\n**Winner:** `{winner}`",
-            "color": color,
-            "fields": [
-                {
-                    "name": "Result Details",
-                    "value": (
-                        f"• **Wagered:** `${stake:,.2f}` on `{target_team}`\n"
-                        f"• **PnL:** `{'+$' if is_win else '-$'}{abs(profit):,.2f}`\n"
-                        f"• **New Bankroll:** `${bankroll:,.2f}`"
-                    ),
-                    "inline": True
-                },
-                {
-                    "name": "Portfolio Statistics",
-                    "value": (
-                        f"• **Total Settled Trades:** `{total_trades}`\n"
-                        f"• **Win Rate:** `{win_rate:.1f}%`"
-                    ),
-                    "inline": True
-                }
-            ],
-            "footer": {
-                "text": f"Match ID: {match_id}"
-            },
-            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-        }
-        return self.send_embed(embed)
+        # Suppress settlement spam if user only wants bet placement notifications
+        logger.info(f"Match {match_id} settled: {winner} won. Profit: ${profit:,.2f}")
+        return True
 
     def send_system_status(self, title: str, message: str, color: int = 0x3498DB) -> bool:
         """
-        Sends general bot operational status or heartbeat message.
+        Suppresses general bot operational status embeds so user only gets messages on actual bets.
         """
-        embed = {
-            "title": f"🤖 {title}",
-            "description": message,
-            "color": color,
-            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-        }
-        return self.send_embed(embed)
+        logger.info(f"[SYSTEM STATUS]: {title} - {message}")
+        return True
+

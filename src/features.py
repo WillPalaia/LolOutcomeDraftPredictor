@@ -16,6 +16,15 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def parse_patch_to_num(patch_str: str) -> float:
+    try:
+        parts = str(patch_str).strip().split('.')
+        major = float(parts[0])
+        minor = float(parts[1]) if len(parts) > 1 else 0.0
+        return float(major * 100.0 + minor)
+    except Exception:
+        return 1400.0
+
 class AdvancedDraftFeatureExtractor:
     def __init__(self, 
                  champion_metadata_path: str = "config/champion_metadata.json",
@@ -112,6 +121,11 @@ class AdvancedDraftFeatureExtractor:
         blue_meta_power = []
         red_meta_power = []
         
+        # Pre-match rolling patch meta priority
+        patch_champs_seen = {}
+        patch_meta_blue = []
+        patch_meta_red = []
+        
         lane_roles = ['top', 'jng', 'mid', 'bot', 'sup']
         lane_history = {r: {} for r in lane_roles}
         lane_edges = {r: [] for r in lane_roles}
@@ -126,11 +140,13 @@ class AdvancedDraftFeatureExtractor:
 
         for idx, row in df_feat.iterrows():
             b_win = int(row['blue_win'])
+            p_val = str(row.get('patch', '14.01'))
             
             b_champs = [row[f'blue_{r}'] for r in lane_roles]
             r_champs = [row[f'red_{r}'] for r in lane_roles]
             all_bans = [row.get(f'blue_ban{i}', '') for i in range(1, 6)] + [row.get(f'red_ban{i}', '') for i in range(1, 6)]
             
+            # 1. Global Meta Presence
             b_meta_score = 0.0
             r_meta_score = 0.0
             total_seen = max(1, idx)
@@ -149,6 +165,22 @@ class AdvancedDraftFeatureExtractor:
                 if ch and isinstance(ch, str) and ch.strip():
                     champ_presence_history[ch] = champ_presence_history.get(ch, 0) + 1
 
+            # 2. Patch-Specific Meta Priority
+            if p_val not in patch_champs_seen:
+                patch_champs_seen[p_val] = {}
+            p_dict = patch_champs_seen[p_val]
+            total_p_games = max(1.0, sum(p_dict.values()) / 10.0 if p_dict else 1.0)
+            
+            b_p_score = sum([p_dict.get(c, 0) / total_p_games for c in b_champs])
+            r_p_score = sum([p_dict.get(c, 0) / total_p_games for c in r_champs])
+            patch_meta_blue.append(b_p_score)
+            patch_meta_red.append(r_p_score)
+            
+            for ch in b_champs + r_champs + all_bans:
+                if ch and isinstance(ch, str) and ch.strip():
+                    p_dict[ch] = p_dict.get(ch, 0) + 1
+
+            # 3. Bayesian Shrunk Lane Matchups
             for role in lane_roles:
                 b_c = row[f'blue_{role}']
                 r_c = row[f'red_{role}']
@@ -169,6 +201,7 @@ class AdvancedDraftFeatureExtractor:
                 lane_history[role][k][0] += b_win
                 lane_history[role][k][1] += 1
 
+            # 4. Bayesian Duo Synergies
             for r1, r2 in duo_combos:
                 combo_name = f"{r1}_{r2}"
                 b_pair = (row[f'blue_{r1}'], row[f'blue_{r2}'])
@@ -190,6 +223,7 @@ class AdvancedDraftFeatureExtractor:
                 duo_history[combo_name][r_pair][0] += (1 - b_win)
                 duo_history[combo_name][r_pair][1] += 1
 
+            # 5. Regularized Player Mastery
             b_mast = 0.0
             r_mast = 0.0
             for r in lane_roles:
@@ -197,7 +231,7 @@ class AdvancedDraftFeatureExtractor:
                 bc_name = row.get(f'blue_{r}', '')
                 if bp_name and bc_name:
                     pw, pn = player_history.get((bp_name, bc_name), (0, 0))
-                    b_mast += (pw + 3.0 * 0.50) / (pn + 3.0) - 0.50
+                    b_mast += (pw + 10.0 * 0.50) / (pn + 10.0) - 0.50
                     if (bp_name, bc_name) not in player_history: player_history[(bp_name, bc_name)] = [0, 0]
                     player_history[(bp_name, bc_name)][0] += b_win
                     player_history[(bp_name, bc_name)][1] += 1
@@ -206,7 +240,7 @@ class AdvancedDraftFeatureExtractor:
                 rc_name = row.get(f'red_{r}', '')
                 if rp_name and rc_name:
                     pw, pn = player_history.get((rp_name, rc_name), (0, 0))
-                    r_mast += (pw + 3.0 * 0.50) / (pn + 3.0) - 0.50
+                    r_mast += (pw + 10.0 * 0.50) / (pn + 10.0) - 0.50
                     if (rp_name, rc_name) not in player_history: player_history[(rp_name, rc_name)] = [0, 0]
                     player_history[(rp_name, rc_name)][0] += (1 - b_win)
                     player_history[(rp_name, rc_name)][1] += 1
@@ -215,6 +249,8 @@ class AdvancedDraftFeatureExtractor:
             red_mastery_scores.append(r_mast)
 
         df_advanced = pd.DataFrame()
+        df_advanced['patch_num'] = df_feat['patch'].apply(parse_patch_to_num)
+        df_advanced['diff_patch_meta_priority'] = np.array(patch_meta_blue) - np.array(patch_meta_red)
         df_advanced['diff_meta_power'] = np.array(blue_meta_power) - np.array(red_meta_power)
         df_advanced['diff_player_mastery'] = np.array(blue_mastery_scores) - np.array(red_mastery_scores)
         
@@ -237,11 +273,12 @@ class AdvancedDraftFeatureExtractor:
 
         feature_cols = [
             'blue_rating_pre', 'red_rating_pre', 'baseline_blue_prob',
-            'diff_cc_score', 'diff_engage_score', 'diff_scaling_score', 'diff_ranged_count',
-            'diff_frontline', 'diff_tank_count', 'diff_ad_share', 'diff_ap_share',
-            'diff_ad_trap', 'diff_ap_trap', 'diff_meta_power', 'diff_player_mastery',
+            'patch_num', 'diff_patch_meta_priority', 'diff_meta_power', 'diff_player_mastery',
             'total_lane_edge', 'matchup_edge_top', 'matchup_edge_jng', 'matchup_edge_mid', 'matchup_edge_bot', 'matchup_edge_sup',
             'total_duo_synergy', 'duo_synergy_bot_sup', 'duo_synergy_mid_jng', 'duo_synergy_top_jng',
+            'diff_cc_score', 'diff_engage_score', 'diff_scaling_score', 'diff_ranged_count',
+            'diff_frontline', 'diff_tank_count', 'diff_ad_share', 'diff_ap_share',
+            'diff_ad_trap', 'diff_ap_trap',
             'b_cc_score', 'b_engage_score', 'b_scaling_score', 'b_ad_share', 'b_ap_share', 'b_frontline_count',
             'r_cc_score', 'r_engage_score', 'r_scaling_score', 'r_ad_share', 'r_ap_share', 'r_frontline_count'
         ]
@@ -249,3 +286,4 @@ class AdvancedDraftFeatureExtractor:
         feature_cols = [c for c in feature_cols if c in result_df.columns]
         logger.info(f"Engineered {len(feature_cols)} advanced features for {len(result_df)} competitive matches!")
         return result_df, feature_cols
+

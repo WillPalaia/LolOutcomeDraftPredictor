@@ -2,7 +2,7 @@ data:
   raw_dir: "data/raw"
   processed_dir: "data/processed"
   cache_dir: "data/cache"
-  years: [2022, 2023, 2024, 2025]
+  years: [2024]
   gdrive_file_ids:
     2021: "1fzwTTz77hcnYjOnO9ONeoPrkWCoOSecA"
     2022: "1EHmptHyzY8owv0BAcNKtkQpMwfkURwRy"
@@ -31,7 +31,7 @@ ratings:
   side_bias_elo: 35.0  # ~55% Blue side baseline win rate
 
 features:
-  bayesian_prior_matches: 20.0
+  bayesian_prior_matches: 15.0
   bayesian_prior_winrate: 0.50
   patch_decay_halflife_days: 21.0
   min_champion_games_mastery: 5
@@ -39,40 +39,20 @@ features:
 models:
   primary: "catboost"
   catboost:
-    iterations: 800
-    learning_rate: 0.03
-    depth: 6
-    l2_leaf_reg: 4.0
+    iterations: 350
+    learning_rate: 0.02
+    depth: 4
+    l2_leaf_reg: 8.0
     random_seed: 42
-    early_stopping_rounds: 50
-  lightgbm:
-    n_estimators: 800
-    learning_rate: 0.03
-    num_leaves: 31
-    reg_alpha: 1.0
-    reg_lambda: 3.0
-    random_state: 42
-  xgboost:
-    n_estimators: 800
-    learning_rate: 0.03
-    max_depth: 5
-    subsample: 0.8
-    colsample_bytree: 0.8
-    random_state: 42
-  neural:
-    embedding_dim: 32
-    hidden_dim: 128
-    dropout: 0.25
-    learning_rate: 0.001
-    epochs: 40
-    batch_size: 64
+    early_stopping_rounds: 40
 
 backtest:
   min_train_games: 4000
   test_split_ratio: 0.2
   expanding_window: true
-  market_vig: 0.04           # 4% bookmaker overround
-  ev_threshold: 0.03         # Minimum 3% EV to place trade
-  kelly_fraction: 0.25       # Quarter-Kelly criterion
+  market_vig: 0.035          # 3.5% bookmaker overround
+  ev_threshold: 0.025        # Minimum 2.5% EV to place trade
+  kelly_fraction: 0.20       # 1/5th Kelly criterion
   initial_bankroll: 10000.0  # $10,000 baseline
-  max_bet_fraction: 0.05     # Cap individual bets at 5% bankroll
+  max_bet_fraction: 0.035    # Cap individual bets at 3.5% bankroll
+

@@ -9,13 +9,17 @@ db_path: "data/bot/paper_portfolio.db"
 dry_run: true  # True = Paper Trading, False = Live Execution
 
 # Quantitative Trade Execution Rules
-ev_threshold: 0.035        # Minimum 3.5% EV edge to trigger trade
+ev_threshold: 0.025        # Minimum 2.5% EV edge to trigger trade
 kelly_fraction: 0.20      # 1/5th Kelly Criterion Sizing
 max_bet_fraction: 0.035   # Hard risk cap: 3.5% bankroll per match
-side_bias_elo: 32.0       # Dynamic Blue-side advantage rating
+side_bias_elo: 35.0       # Dynamic Blue-side advantage rating
 
 # Safety Circuit Breakers
 max_daily_drawdown_pct: 10.0  # Pause trading if daily drawdown exceeds 10%
+
+# Notification Settings (Strictly bets-only)
+only_notify_on_bet: true
+notify_on_startup: false
 
 # Polling & Leagues to Monitor
 poll_interval_seconds: 30
@@ -28,3 +32,4 @@ target_leagues:
   - "WORLDS"
   - "WLDs"
   - "EWC"
+

@@ -12,7 +12,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score, brier_score_loss
 
 from src.ingestion import ingest_dataset
 from src.ratings import DynamicRatingEngine
-from src.features import DraftFeatureExtractor
+from src.features import AdvancedDraftFeatureExtractor
 from src.models.tree_models import ResidualDraftModel
 from src.backtest.market_simulator import MarketOddsSimulator
 from src.backtest.betting_strategy import EVBettingBacktester
@@ -51,8 +51,8 @@ def run_full_pipeline(config_path: str = "config/default_config.yaml"):
     logger.info(f"Pre-Draft Team Baseline Metrics -> Accuracy: {baseline_acc*100:.2f}%, AUC: {baseline_auc:.4f}, Brier: {baseline_brier:.4f}")
 
     # 3. Feature Engineering Phase
-    logger.info("--- PHASE 3: FEATURE ENGINEERING (BAYESIAN MATCHUPS & COMPS) ---")
-    feature_extractor = DraftFeatureExtractor(
+    logger.info("--- PHASE 3: FEATURE ENGINEERING (PATCH PRIORITY, MATCHUPS & COMPS) ---")
+    feature_extractor = AdvancedDraftFeatureExtractor(
         champion_metadata_path="config/champion_metadata.json",
         bayesian_prior_matches=config['features']['bayesian_prior_matches'],
         bayesian_prior_winrate=config['features']['bayesian_prior_winrate']
@@ -61,7 +61,7 @@ def run_full_pipeline(config_path: str = "config/default_config.yaml"):
     logger.info(f"Feature matrix ready: {df_features.shape[0]} rows, {len(feature_cols)} predictor features")
 
     # 4. Chronological Train / Validation / Test Split
-    logger.info("--- PHASE 4: TIME-SERIES SPLIT & RESIDUAL MODEL TRAINING ---")
+    logger.info("--- PHASE 4: TIME-SERIES SPLIT & HEAVY PATCH-WEIGHTED MODEL TRAINING ---")
     test_ratio = config['backtest']['test_split_ratio']
     split_idx = int(len(df_features) * (1.0 - test_ratio))
     
@@ -81,20 +81,29 @@ def run_full_pipeline(config_path: str = "config/default_config.yaml"):
     y_test = df_test['blue_win'].values
     test_base_probs = df_test['baseline_blue_prob'].values
     
+    # Compute Patch Weights (Current Patch Heavily Weighted with Exponential Recency Decay)
+    if 'patch_num' in df_train.columns:
+        max_train_p = df_train['patch_num'].max()
+        patch_deltas = (max_train_p - df_train['patch_num']).clip(lower=0)
+        sample_weights = np.exp(-0.06 * patch_deltas) * (1.0 + 3.0 * (df_train['patch_num'] == max_train_p).astype(float))
+        sample_weights = sample_weights / sample_weights.mean()
+        logger.info(f"Applied heavy patch recency sample weighting: Latest Train Patch = {max_train_p:.0f} (4x weight boost)")
+    else:
+        sample_weights = None
+
     # Train Constrained Residual Model
     model = ResidualDraftModel(
+        iterations=350,
         learning_rate=0.02,
-        num_leaves=15,
-        max_depth=4,
-        reg_alpha=2.0,
-        reg_lambda=5.0,
-        num_boost_round=350,
+        depth=4,
+        l2_leaf_reg=8.0,
         random_seed=42
     )
     model.fit(
         X=X_train,
         y=y_train,
         base_probs=train_base_probs,
+        sample_weight=sample_weights,
         val_X=X_test,
         val_y=y_test,
         val_base_probs=test_base_probs
@@ -104,6 +113,16 @@ def run_full_pipeline(config_path: str = "config/default_config.yaml"):
     model_save_path = os.path.join(config['data']['cache_dir'], "residual_draft_model.joblib")
     model.save(model_save_path)
     logger.info(f"Saved trained model to {model_save_path}")
+
+    # Log Parameter Weights (Feature Importances)
+    feat_imp = model.get_feature_importances(structural_cols)
+    logger.info("=================================================================")
+    logger.info("  MODEL PARAMETER WEIGHTS (CATBOOST FEATURE IMPORTANCE)          ")
+    logger.info("=================================================================")
+    for _, r in feat_imp.iterrows():
+        if r['importance'] > 0.01:
+            logger.info(f"  • {r['feature']:<28}: {r['importance']:6.2f}%")
+    logger.info("=================================================================")
 
     # 5. Out-of-Sample Evaluation
     logger.info("--- PHASE 5: PROBABILITY EVALUATION ---")
@@ -130,7 +149,7 @@ def run_full_pipeline(config_path: str = "config/default_config.yaml"):
     
     backtester = EVBettingBacktester(
         initial_bankroll=config['backtest']['initial_bankroll'],
-        ev_threshold=config['backtest'].get('ev_threshold', 0.035),
+        ev_threshold=config['backtest'].get('ev_threshold', 0.025),
         kelly_fraction=config['backtest'].get('kelly_fraction', 0.20),
         max_bet_fraction=config['backtest'].get('max_bet_fraction', 0.035)
     )
@@ -154,9 +173,11 @@ def run_full_pipeline(config_path: str = "config/default_config.yaml"):
     report_path = os.path.join(config['data']['cache_dir'], "backtest_summary.json")
     with open(report_path, "w", encoding="utf-8") as f:
         summary_to_save = {k: v for k, v in backtest_results.items() if k != 'trades'}
+        summary_to_save['feature_importances'] = feat_imp.to_dict(orient='records')
         json.dump(summary_to_save, f, indent=2)
     logger.info(f"Saved summary metrics to {report_path}")
     return backtest_results
 
 if __name__ == "__main__":
     run_full_pipeline()
+

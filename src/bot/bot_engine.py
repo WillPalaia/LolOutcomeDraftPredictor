@@ -64,6 +64,18 @@ class DraftBotEngine:
         )
         self.listener = LiveFeedListener(target_leagues=self.config.get("target_leagues", ["LCK", "LPL", "LEC", "LCS"]))
         
+        # Load trained residual model if available
+        self.model = None
+        model_path = os.path.join(workspace_root, "data/cache/residual_draft_model.joblib")
+        if os.path.exists(model_path):
+            try:
+                from src.models.tree_models import ResidualDraftModel
+                self.model = ResidualDraftModel()
+                self.model.load(model_path)
+                logger.info(f"Loaded trained CatBoost model from {model_path}")
+            except Exception as e:
+                logger.warning(f"Could not load serialized model: {e}")
+
         # Base team ratings
         self.team_ratings = {
             "Gen.G": 1720, "T1": 1680, "Hanwha Life Esports": 1670, "Dplus KIA": 1580, "KT Rolster": 1550,
@@ -90,8 +102,9 @@ class DraftBotEngine:
         league = match_data.get("league", "PRO")
         b_team = self.normalize_team(match_data["blue_team"])
         r_team = self.normalize_team(match_data["red_team"])
+        patch_str = str(match_data.get("patch", "14.18"))
         
-        r_b = self.team_ratings.get(b_team, 1500.0) + self.config.get("side_bias_elo", 32.0)
+        r_b = self.team_ratings.get(b_team, 1500.0) + self.config.get("side_bias_elo", 35.0)
         r_r = self.team_ratings.get(r_team, 1500.0)
         p_base = float(np.clip(1.0 / (1.0 + 10.0 ** (-(r_b - r_r) / 400.0)), 0.03, 0.97))
         
@@ -122,6 +135,7 @@ class DraftBotEngine:
         return {
             "match_id": match_id,
             "league": league,
+            "patch": patch_str,
             "blue_team": b_team,
             "red_team": r_team,
             "blue_picks": b_picks,
@@ -143,7 +157,7 @@ class DraftBotEngine:
         res = self.evaluate_draft(match_data)
         self.processed_drafts.add(match_id)
         
-        ev_thresh = self.config.get("ev_threshold", 0.035)
+        ev_thresh = self.config.get("ev_threshold", 0.025)
         kelly_frac = self.config.get("kelly_fraction", 0.20)
         max_bet_frac = self.config.get("max_bet_fraction", 0.035)
         
@@ -189,6 +203,7 @@ class DraftBotEngine:
                     stake=stake
                 )
                 
+                # Send Discord Notification ONLY when an actual bet is placed
                 self.notifier.send_trade_signal(
                     match_id=match_id,
                     league=res["league"],
@@ -208,27 +223,34 @@ class DraftBotEngine:
                     bankroll=current_bankroll,
                     is_dry_run=is_dry_run
                 )
+                logger.info(f"🚨 [BET PLACED] Wagered ${stake:,.2f} on {res['blue_team'] if rec_side == 'Blue' else res['red_team']} vs {res['red_team'] if rec_side == 'Blue' else res['blue_team']} @ {target_odds:.2f} (EV: +{target_ev*100:.2f}%)")
         else:
-            logger.info(f"Match {match_id} ({res['blue_team']} vs {res['red_team']}): PASS / No +EV edge detected (EV Blue: {res['ev_blue']*100:.1f}%, EV Red: {res['ev_red']*100:.1f}%)")
+            logger.info(f"Match {match_id} ({res['blue_team']} vs {res['red_team']}): PASS / No +EV edge (EV Blue: {res['ev_blue']*100:+.2f}%, EV Red: {res['ev_red']*100:+.2f}%). Webhook kept silent.")
 
     def run_poll_cycle(self):
         logger.info("Polling live schedules & matches...")
         matches = self.listener.fetch_live_schedule()
         logger.info(f"Found {len(matches)} scheduled/ongoing matches.")
         for m in matches:
-            if m.get("state") == "inprogress":
-                logger.info(f"Active game found: {m['blue_team']} vs {m['red_team']} ({m['league']})")
+            match_id = m.get("match_id")
+            if match_id in self.processed_drafts:
+                continue
+                
+            # If match has picks and draft is complete before game start, evaluate & place bet
+            if "blue_picks" in m and "red_picks" in m:
+                if self.listener.is_draft_complete_pre_game(m):
+                    logger.info(f"🎯 Draft finalized for {m['blue_team']} vs {m['red_team']} ({m['league']}). Evaluating trade opportunity...")
+                    self.process_match(m, is_dry_run=self.config.get("dry_run", True))
+            elif m.get("state") == "inprogress":
+                logger.info(f"Live match monitored: {m['blue_team']} vs {m['red_team']} ({m['league']})")
 
     def run_daemon(self, poll_interval_seconds: int = 30):
         logger.info(f"Starting 24/7 Autonomous Draft Bot Daemon (Interval: {poll_interval_seconds}s)...")
-        self.notifier.send_system_status(
-            title="LoL +EV Draft Bot Online 🟢",
-            message=f"Bot successfully launched in **Paper Trading Mode** on Oracle Cloud VPS.\nMonitoring leagues: `{', '.join(self.config.get('target_leagues', ['LCK', 'LPL', 'LEC', 'LCS']))}`\nInitial Bankroll: `${self.config.get('initial_bankroll', 10000):,.2f}`",
-            color=0x2ECC71
-        )
+        logger.info("Discord notifications configured for BET PLACEMENT ONLY (No startup/status spam).")
         while True:
             try:
                 self.run_poll_cycle()
             except Exception as e:
                 logger.error(f"Error during poll cycle: {e}")
             time.sleep(poll_interval_seconds)
+
