@@ -19,6 +19,7 @@ class LiveFeedListener:
         }
         self.seen_matches = set()
         self.base_gw_url = "https://esports-api.lolesports.com/persisted/gw"
+        self.last_error = None
 
     def fetch_live_schedule(self) -> List[Dict[str, Any]]:
         """
@@ -28,6 +29,7 @@ class LiveFeedListener:
         try:
             resp = requests.get(url, headers=self.headers, timeout=10)
             if resp.status_code == 200:
+                self.last_error = None
                 data = resp.json()
                 events = data.get("data", {}).get("schedule", {}).get("events", [])
                 live_matches = []
@@ -53,8 +55,10 @@ class LiveFeedListener:
                                 })
                 return live_matches
             else:
+                self.last_error = {"status_code": resp.status_code, "text": resp.text, "url": url}
                 logger.warning(f"Riot API schedule returned status {resp.status_code}")
         except Exception as e:
+            self.last_error = {"status_code": 0, "text": str(e), "url": url}
             logger.debug(f"Schedule fetch info: {e}")
         return []
 

@@ -146,10 +146,57 @@ class DiscordNotifier:
         logger.info(f"Match {match_id} settled: {winner} won. Profit: ${profit:,.2f}")
         return True
 
+    def send_error_alert(
+        self,
+        error_title: str,
+        error_details: str,
+        error_type: str = "API_ERROR",
+        cooldown_seconds: int = 1800
+    ) -> bool:
+        """
+        Sends high-priority error alert to Discord when the bot encounters an API or runtime failure.
+        Throttled to avoid webhook spam during prolonged outages.
+        """
+        if not hasattr(self, "_last_error_times"):
+            self._last_error_times = {}
+
+        now = time.time()
+        last_sent = self._last_error_times.get(error_type, 0.0)
+        if now - last_sent < cooldown_seconds:
+            logger.debug(f"Error alert '{error_type}' suppressed by cooldown ({int(now - last_sent)}s / {cooldown_seconds}s).")
+            return False
+
+        self._last_error_times[error_type] = now
+        logger.warning(f"Dispatching Discord error alert: {error_title}")
+
+        embed = {
+            "title": f"⚠️ [BOT ERROR ALERT] {error_title}",
+            "description": f"**Status:** Action Required / Monitoring Paused\n**Details:** {error_details}",
+            "color": 0xE74C3C, # Bright Red
+            "fields": [
+                {
+                    "name": "🔍 Error Category",
+                    "value": f"`{error_type}`",
+                    "inline": True
+                },
+                {
+                    "name": "⏱️ Throttling",
+                    "value": f"Alerts muted for next `{cooldown_seconds // 60} minutes`",
+                    "inline": True
+                }
+            ],
+            "footer": {
+                "text": "LoL Draft +EV Autonomous Daemon • Exception Monitor"
+            },
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        }
+        return self.send_embed(embed)
+
     def send_system_status(self, title: str, message: str, color: int = 0x3498DB) -> bool:
         """
         Suppresses general bot operational status embeds so user only gets messages on actual bets.
         """
         logger.info(f"[SYSTEM STATUS]: {title} - {message}")
         return True
+
 

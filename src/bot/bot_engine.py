@@ -230,6 +230,20 @@ class DraftBotEngine:
     def run_poll_cycle(self):
         logger.info("Polling live schedules & matches...")
         matches = self.listener.fetch_live_schedule()
+        
+        # If an API error occurred during schedule fetch, dispatch Discord error alert (throttled)
+        if self.listener.last_error:
+            err = self.listener.last_error
+            status = err.get("status_code", 0)
+            err_text = f"HTTP {status}: {err.get('text', 'Network/Endpoint error')[:200]}"
+            self.notifier.send_error_alert(
+                error_title=f"Riot Gateway API Error ({status})",
+                error_details=f"Live feed poller failed to retrieve match schedule from `{err.get('url')}`.\n**Details:** `{err_text}`",
+                error_type=f"RIOT_API_{status}" if status > 0 else "RIOT_API_NETWORK",
+                cooldown_seconds=1800 # Alert at most once every 30 minutes for this error
+            )
+            return
+
         logger.info(f"Found {len(matches)} scheduled/ongoing matches.")
         for m in matches:
             match_id = m.get("match_id")
@@ -246,11 +260,18 @@ class DraftBotEngine:
 
     def run_daemon(self, poll_interval_seconds: int = 30):
         logger.info(f"Starting 24/7 Autonomous Draft Bot Daemon (Interval: {poll_interval_seconds}s)...")
-        logger.info("Discord notifications configured for BET PLACEMENT ONLY (No startup/status spam).")
+        logger.info("Discord notifications configured for BET PLACEMENT & CRITICAL ERRORS ONLY.")
         while True:
             try:
                 self.run_poll_cycle()
             except Exception as e:
                 logger.error(f"Error during poll cycle: {e}")
+                self.notifier.send_error_alert(
+                    error_title="Daemon Poll Cycle Exception",
+                    error_details=f"An unexpected runtime error occurred: `{str(e)}`",
+                    error_type="DAEMON_EXCEPTION",
+                    cooldown_seconds=1800
+                )
             time.sleep(poll_interval_seconds)
+
 
