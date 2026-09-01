@@ -12,7 +12,7 @@ echo "================================================================="
 
 # 1. Update system packages
 echo "📦 Updating system packages..."
-sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-venv git curl
+sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-venv git curl libgl1 libglib2.0-0
 
 # 2. Setup Python Virtual Environment
 echo "🐍 Creating Python virtual environment..."
