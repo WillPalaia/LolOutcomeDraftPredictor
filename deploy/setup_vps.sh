@@ -41,12 +41,20 @@ sudo systemctl daemon-reload
 sudo systemctl enable lol-draft-bot.service
 sudo systemctl restart lol-draft-bot.service
 
+# 6. Setup Auto-Updater Cron Job (Every 5 minutes)
+echo "🔄 Setting up automatic git auto-updater cron job (every 5 minutes)..."
+chmod +x deploy/auto_update.sh
+AUTO_UPDATE_PATH="$(pwd)/deploy/auto_update.sh"
+mkdir -p data/bot
+(crontab -l 2>/dev/null | grep -v "auto_update.sh"; echo "*/5 * * * * $AUTO_UPDATE_PATH >> $(pwd)/data/bot/auto_update.log 2>&1") | crontab -
+
 echo "================================================================="
-echo "✅ BOT DEPLOYED AND RUNNING 24/7 AS A SYSTEM SERVICE!"
+echo "✅ BOT DEPLOYED, RUNNING 24/7, AND AUTO-UPDATING EVERY 5 MINUTES!"
 echo "================================================================="
 echo "Useful commands:"
 echo "  • View Live Bot Logs:   sudo journalctl -u lol-draft-bot.service -f"
 echo "  • Check Service Status: sudo systemctl status lol-draft-bot.service"
 echo "  • Restart Bot:          sudo systemctl restart lol-draft-bot.service"
 echo "  • Check Portfolio:      ./venv/bin/python run_bot.py --status"
+echo "  • Check Auto-Updater:   tail -f data/bot/auto_update.log"
 echo "================================================================="
