@@ -14,6 +14,7 @@ import json
 import yaml
 import difflib
 import logging
+import threading
 import numpy as np
 from typing import Dict, Any, Optional, List, Set, Tuple
 
@@ -101,7 +102,11 @@ class DraftBotEngine:
             stability_count=self.vision_config.get("stability_count", 2),
             on_draft_locked=self.on_vision_draft_locked
         )
-        logger.info("DraftBotEngine initialized successfully with Vision Stream Ingestion.")
+        
+        # Autonomous 24/7 Stream Discovery Workers
+        self.active_stream_monitors: Dict[str, threading.Thread] = {}
+        self.active_stream_stops: Dict[str, threading.Event] = {}
+        logger.info("DraftBotEngine initialized successfully with Autonomous Vision Stream Ingestion.")
 
     def on_vision_draft_locked(self, match_data: dict):
         """
@@ -278,8 +283,86 @@ class DraftBotEngine:
                 if self.listener.is_draft_complete_pre_game(m):
                     logger.info(f"🎯 Draft finalized for {m['blue_team']} vs {m['red_team']} ({m['league']}). Evaluating trade opportunity...")
                     self.process_match(m, is_dry_run=self.config.get("dry_run", True))
-            elif m.get("state") == "inprogress":
-                logger.info(f"Live match monitored: {m['blue_team']} vs {m['red_team']} ({m['league']})")
+            elif m.get("state") in ["inprogress", "unstarted"] and self.vision_config.get("enabled", True):
+                # Automatic Live Stream Discovery & Vision Ingestion
+                league = m.get("league", "")
+                stream_url = self.resolve_stream_source_for_league(league)
+                if stream_url:
+                    self._ensure_stream_monitor_running(league, stream_url, m)
+
+    def resolve_stream_source_for_league(self, league_name: str) -> Optional[str]:
+        """
+        Automatically resolves the official live broadcast URL for a target league.
+        """
+        if not league_name:
+            return None
+            
+        l_upper = league_name.upper()
+        yt_map = self.vision_config.get("youtube_channels", {})
+        tw_map = self.vision_config.get("twitch_channels", {})
+        
+        # 1. Direct configured mapping
+        for k, v in yt_map.items():
+            if k.upper() in l_upper or l_upper in k.upper():
+                return v
+        for k, v in tw_map.items():
+            if k.upper() in l_upper or l_upper in k.upper():
+                return v
+
+        # 2. Canonical League Fallbacks
+        if "LCK" in l_upper:
+            return "https://www.youtube.com/@LCKglobal/live"
+        elif "LPL" in l_upper:
+            return "https://www.youtube.com/@LPLEnglish/live"
+        elif "LEC" in l_upper:
+            return "https://www.youtube.com/@LEC/live"
+        elif "LCS" in l_upper:
+            return "https://www.youtube.com/@LCS/live"
+        elif any(w in l_upper for w in ["WORLD", "WLD", "MSI", "EWC"]):
+            return "https://www.youtube.com/@lolesports/live"
+            
+        return None
+
+    def _ensure_stream_monitor_running(self, league: str, stream_url: str, match_info: dict):
+        """
+        Spawns a background thread to autonomously monitor the live stream for draft finalization.
+        """
+        if league in self.active_stream_monitors and self.active_stream_monitors[league].is_alive():
+            return  # Already actively monitoring this stream
+
+        logger.info(f"📡 [AUTO-DISCOVERY] Found active/upcoming {league} match ({match_info.get('blue_team')} vs {match_info.get('red_team')})!")
+        logger.info(f"   📺 Attaching autonomous Vision Stream Monitor to: {stream_url}")
+        
+        stop_event = threading.Event()
+        self.active_stream_stops[league] = stop_event
+        
+        def monitor_worker():
+            pipeline = VisionDraftPipeline(
+                stream_source=stream_url,
+                stability_count=self.vision_config.get("stability_count", 2),
+                on_draft_locked=self.on_vision_draft_locked
+            )
+            if not pipeline.grabber.open():
+                logger.warning(f"Could not connect to live stream for {league} ({stream_url}). Will retry next cycle.")
+                return
+                
+            interval = self.vision_config.get("poll_interval_seconds", 2.5)
+            logger.info(f"👁️ Vision Monitor scanning {league} broadcast stream autonomously...")
+            try:
+                while not stop_event.is_set():
+                    frame = pipeline.grabber.read_frame()
+                    if frame is not None:
+                        pipeline.check_frame_and_dispatch(frame, league=league)
+                    time.sleep(interval)
+            except Exception as e:
+                logger.error(f"Error in Vision Monitor worker for {league}: {e}")
+            finally:
+                pipeline.grabber.close()
+                logger.info(f"Vision Monitor stopped for {league}.")
+
+        t = threading.Thread(target=monitor_worker, daemon=True, name=f"VisionMonitor_{league}")
+        t.start()
+        self.active_stream_monitors[league] = t
 
     def evaluate_vision_image(self, image_input: Any, league: str = "PRO") -> Optional[Dict[str, Any]]:
         """
