@@ -45,8 +45,6 @@ class StreamGrabber:
         self.monitor_index = monitor_index
         self.cap: Optional[cv2.VideoCapture] = None
         self.sct = None
-        if MSS_AVAILABLE:
-            self.sct = mss.mss()
         self.resolved_url: Optional[str] = None
         self.is_running = False
 
@@ -103,9 +101,15 @@ class StreamGrabber:
             if not MSS_AVAILABLE:
                 logger.error("mss library not installed for screen capture.")
                 return False
-            logger.info(f"Initialized screen capture on monitor {self.monitor_index}.")
-            self.is_running = True
-            return True
+            try:
+                if self.sct is None:
+                    self.sct = mss.mss()
+                logger.info(f"Initialized screen capture on monitor {self.monitor_index}.")
+                self.is_running = True
+                return True
+            except Exception as e:
+                logger.warning(f"Screen capture unavailable on headless environment: {e}")
+                return False
 
         # Video stream or file
         direct_url = self.resolve_stream_url(self.source)
@@ -128,9 +132,11 @@ class StreamGrabber:
         Reads a single BGR frame from the active stream or screen.
         """
         if self.source == "screen":
-            if not self.sct:
-                return None
             try:
+                if not self.sct:
+                    if not MSS_AVAILABLE:
+                        return None
+                    self.sct = mss.mss()
                 monitors = self.sct.monitors
                 m_idx = self.monitor_index if self.monitor_index < len(monitors) else 0
                 sct_img = self.sct.grab(monitors[m_idx])
@@ -139,7 +145,7 @@ class StreamGrabber:
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
                 return frame
             except Exception as e:
-                logger.error(f"Screen grab failed: {e}")
+                logger.debug(f"Screen grab failed (headless mode): {e}")
                 return None
 
         if self.cap and self.cap.isOpened():

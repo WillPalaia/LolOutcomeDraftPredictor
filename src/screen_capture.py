@@ -1,9 +1,10 @@
 import os
+from typing import Optional
 import mss
 import mss.tools
 from PIL import Image
 
-def capture_screen(output_path: str = "data/screenshots/live_draft.png", monitor_index: int = 0) -> str:
+def capture_screen(output_path: str = "data/screenshots/live_draft.png", monitor_index: int = 0) -> Optional[str]:
     """
     Captures screen using mss and saves as PNG.
     monitor_index=0 captures all combined monitors.
@@ -11,18 +12,21 @@ def capture_screen(output_path: str = "data/screenshots/live_draft.png", monitor
     monitor_index=2 captures secondary monitor.
     """
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with mss.mss() as sct:
-        monitors = sct.monitors
-        if monitor_index < 0 or monitor_index >= len(monitors):
-            monitor_index = 0
+    try:
+        with mss.mss() as sct:
+            monitors = sct.monitors
+            if monitor_index < 0 or monitor_index >= len(monitors):
+                monitor_index = 0
+                
+            selected_monitor = monitors[monitor_index]
+            sct_img = sct.grab(selected_monitor)
             
-        selected_monitor = monitors[monitor_index]
-        sct_img = sct.grab(selected_monitor)
-        
-        # Save image
-        mss.tools.to_png(sct_img.rgb, sct_img.size, output=output_path)
-        
-    return os.path.abspath(output_path)
+            # Save image
+            mss.tools.to_png(sct_img.rgb, sct_img.size, output=output_path)
+        return os.path.abspath(output_path)
+    except Exception as e:
+        print(f"Screen capture unavailable on headless environment: {e}")
+        return None
 
 if __name__ == "__main__":
     path = capture_screen()
