@@ -18,6 +18,8 @@ import threading
 import numpy as np
 from typing import Dict, Any, Optional, List, Set, Tuple
 
+from datetime import datetime, timezone
+
 # Ensure workspace root is in python path
 workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if workspace_root not in sys.path:
@@ -272,6 +274,7 @@ class DraftBotEngine:
             )
             return
 
+        now = datetime.now(timezone.utc)
         logger.info(f"Found {len(matches)} scheduled/ongoing matches.")
         for m in matches:
             match_id = m.get("match_id")
@@ -283,12 +286,30 @@ class DraftBotEngine:
                 if self.listener.is_draft_complete_pre_game(m):
                     logger.info(f"🎯 Draft finalized for {m['blue_team']} vs {m['red_team']} ({m['league']}). Evaluating trade opportunity...")
                     self.process_match(m, is_dry_run=self.config.get("dry_run", True))
-            elif m.get("state") in ["inprogress", "unstarted"] and self.vision_config.get("enabled", True):
-                # Automatic Live Stream Discovery & Vision Ingestion
-                league = m.get("league", "")
-                stream_url = self.resolve_stream_source_for_league(league)
-                if stream_url:
-                    self._ensure_stream_monitor_running(league, stream_url, m)
+            elif self.vision_config.get("enabled", True):
+                state = m.get("state", "").lower()
+                start_time_str = m.get("start_time", "")
+                is_imminent = False
+                
+                if state == "inprogress":
+                    is_imminent = True
+                elif start_time_str:
+                    try:
+                        start_dt = datetime.fromisoformat(start_time_str.replace("Z", "+00:00"))
+                        minutes_until = (start_dt - now).total_seconds() / 60.0
+                        if -180 <= minutes_until <= 20:
+                            is_imminent = True
+                        elif minutes_until > 20:
+                            logger.info(f"⏳ Match {m['blue_team']} vs {m['red_team']} ({m['league']}) scheduled in {int(minutes_until)} mins.")
+                    except Exception:
+                        if state in ["unstarted", "inprogress"]:
+                            is_imminent = True
+
+                if is_imminent:
+                    league = m.get("league", "")
+                    stream_url = self.resolve_stream_source_for_league(league)
+                    if stream_url:
+                        self._ensure_stream_monitor_running(league, stream_url, m)
 
     def resolve_stream_source_for_league(self, league_name: str) -> Optional[str]:
         """
@@ -313,7 +334,7 @@ class DraftBotEngine:
         if "LCK" in l_upper:
             return "https://www.youtube.com/@LCKglobal/live"
         elif "LPL" in l_upper:
-            return "https://www.youtube.com/@LPLEnglish/live"
+            return "https://www.twitch.tv/lpl"
         elif "LEC" in l_upper:
             return "https://www.youtube.com/@LEC/live"
         elif "LCS" in l_upper:

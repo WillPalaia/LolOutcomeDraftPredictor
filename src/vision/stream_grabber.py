@@ -52,6 +52,11 @@ class StreamGrabber:
         """
         Resolves YouTube or Twitch live broadcast into a direct m3u8/HLS stream URL.
         """
+        class QuietYTDLLogger:
+            def debug(self, msg): pass
+            def warning(self, msg): pass
+            def error(self, msg): pass
+
         if "youtube.com" in source_url or "youtu.be" in source_url:
             if not YTDLP_AVAILABLE:
                 logger.error("yt-dlp not available to resolve YouTube stream.")
@@ -60,15 +65,17 @@ class StreamGrabber:
                 ydl_opts = {
                     "format": "best[height<=1080]/best",
                     "quiet": True,
-                    "no_warnings": True
+                    "no_warnings": True,
+                    "logger": QuietYTDLLogger()
                 }
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     info = ydl.extract_info(source_url, download=False)
                     url = info.get("url")
-                    logger.info(f"Resolved YouTube stream URL for {source_url}")
-                    return url
+                    if url:
+                        logger.info(f"Resolved live YouTube stream URL for {source_url}")
+                        return url
             except Exception as e:
-                logger.error(f"Failed to resolve YouTube live URL: {e}")
+                logger.info(f"YouTube broadcast for {source_url} is not currently live ({e.__class__.__name__}).")
                 return None
 
         elif "twitch.tv" in source_url or source_url.startswith("twitch:"):
@@ -80,7 +87,7 @@ class StreamGrabber:
                 streams = streamlink.streams(clean_url)
                 if "best" in streams:
                     url = streams["best"].url
-                    logger.info(f"Resolved Twitch stream URL for {clean_url}")
+                    logger.info(f"Resolved live Twitch stream URL for {clean_url}")
                     return url
                 elif "720p" in streams:
                     return streams["720p"].url
@@ -88,7 +95,7 @@ class StreamGrabber:
                     first_key = next(iter(streams))
                     return streams[first_key].url
             except Exception as e:
-                logger.error(f"Failed to resolve Twitch stream: {e}")
+                logger.info(f"Twitch broadcast for {source_url} is not currently live.")
                 return None
 
         return source_url
