@@ -407,4 +407,23 @@ class DraftBotEngine:
             poll_interval_seconds=interval
         )
 
+    def run_daemon(self, poll_interval_seconds: int = 30):
+        """
+        Starts the 24/7 autonomous daemon with schedule polling and live stream auto-discovery.
+        """
+        logger.info(f"Starting 24/7 Autonomous Draft Bot Daemon (Interval: {poll_interval_seconds}s)...")
+        logger.info("Discord notifications configured for BET PLACEMENT & CRITICAL ERRORS ONLY.")
+        while True:
+            try:
+                self.run_poll_cycle()
+            except Exception as e:
+                logger.error(f"Error during poll cycle: {e}")
+                self.notifier.send_error_alert(
+                    error_title="Daemon Poll Cycle Exception",
+                    error_details=f"An unexpected runtime error occurred: `{str(e)}`",
+                    error_type="DAEMON_EXCEPTION",
+                    cooldown_seconds=1800
+                )
+            time.sleep(poll_interval_seconds)
+
 
