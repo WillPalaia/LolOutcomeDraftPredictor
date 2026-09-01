@@ -10,6 +10,21 @@ if workspace_root not in sys.path:
 
 from src.screen_capture import capture_screen
 from live_draft_cli import LiveTwitchDraftAssistant
+from src.vision.vision_pipeline import VisionDraftPipeline
+
+def parse_image_draft(image_path: str) -> dict:
+    """
+    Parses a draft image and returns the structured 10-champion draft payload.
+    """
+    pipeline = VisionDraftPipeline()
+    return pipeline.process_image(image_path)
+
+def parse_screen_draft(monitor_index: int = 1) -> dict:
+    """
+    Captures primary screen and parses the draft in real-time.
+    """
+    screenshot_path = capture_screen(monitor_index=monitor_index)
+    return parse_image_draft(screenshot_path)
 
 def evaluate_parsed_draft(
     blue_team: str,
@@ -35,5 +50,9 @@ def evaluate_parsed_draft(
     )
 
 if __name__ == "__main__":
-    # Test evaluation
-    print("Vision Draft Evaluation Module Loaded.")
+    print("Testing Screen Vision Draft Parser...")
+    res = parse_screen_draft()
+    if res:
+        print("Detected draft:", res)
+    else:
+        print("No active draft detected on screen.")

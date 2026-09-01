@@ -2,6 +2,11 @@
 Autonomous 24/7 LoL +EV Draft Trading Bot Engine.
 Evaluates incoming drafts, executes paper/live fractional Kelly trades, and sends Discord alerts.
 """
+try:
+    import onnxruntime  # Initialize runtime before other C-extensions on Windows
+except Exception:
+    pass
+
 import os
 import sys
 import time
@@ -10,6 +15,7 @@ import yaml
 import difflib
 import logging
 import numpy as np
+from typing import Dict, Any, Optional, List, Set, Tuple
 
 # Ensure workspace root is in python path
 workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,6 +27,7 @@ from src.bot.paper_trader import PaperPortfolio
 from src.bot.live_feed_listener import LiveFeedListener
 from src.ratings import DynamicRatingEngine
 from src.features import AdvancedDraftFeatureExtractor
+from src.vision.vision_pipeline import VisionDraftPipeline
 
 logger = logging.getLogger("LoLDraftBot")
 
@@ -85,7 +92,23 @@ class DraftBotEngine:
         }
         
         self.processed_drafts = set()
-        logger.info("DraftBotEngine initialized successfully.")
+        
+        # Initialize Computer Vision Stream Ingestion Pipeline
+        self.vision_config = self.config.get("vision", {})
+        self.vision_pipeline = VisionDraftPipeline(
+            stream_source=self.vision_config.get("default_source", "screen"),
+            monitor_index=self.vision_config.get("monitor_index", 1),
+            stability_count=self.vision_config.get("stability_count", 2),
+            on_draft_locked=self.on_vision_draft_locked
+        )
+        logger.info("DraftBotEngine initialized successfully with Vision Stream Ingestion.")
+
+    def on_vision_draft_locked(self, match_data: dict):
+        """
+        Callback triggered when Vision Pipeline detects and confirms a 10-champion finalized draft.
+        """
+        logger.info(f"⚡ [VISION EVENT] Processing visually locked draft: {match_data['match_id']}")
+        self.process_match(match_data, is_dry_run=self.config.get("dry_run", True))
 
     def normalize_team(self, name: str) -> str:
         if not name: return "Unknown"
@@ -258,20 +281,47 @@ class DraftBotEngine:
             elif m.get("state") == "inprogress":
                 logger.info(f"Live match monitored: {m['blue_team']} vs {m['red_team']} ({m['league']})")
 
-    def run_daemon(self, poll_interval_seconds: int = 30):
-        logger.info(f"Starting 24/7 Autonomous Draft Bot Daemon (Interval: {poll_interval_seconds}s)...")
-        logger.info("Discord notifications configured for BET PLACEMENT & CRITICAL ERRORS ONLY.")
-        while True:
-            try:
-                self.run_poll_cycle()
-            except Exception as e:
-                logger.error(f"Error during poll cycle: {e}")
-                self.notifier.send_error_alert(
-                    error_title="Daemon Poll Cycle Exception",
-                    error_details=f"An unexpected runtime error occurred: `{str(e)}`",
-                    error_type="DAEMON_EXCEPTION",
-                    cooldown_seconds=1800
-                )
-            time.sleep(poll_interval_seconds)
+    def evaluate_vision_image(self, image_input: Any, league: str = "PRO") -> Optional[Dict[str, Any]]:
+        """
+        Takes an image path, screenshot, or video frame and runs the vision pipeline.
+        If a valid 10-champion draft is parsed, evaluates EV and places trade.
+        """
+        logger.info("Evaluating image with Vision Draft Pipeline...")
+        detection = self.vision_pipeline.process_image(image_input)
+        if detection and detection.get("is_complete"):
+            match_data = {
+                "match_id": f"VISION_IMG_{detection['blue_team']}_vs_{detection['red_team']}_{int(time.time())}",
+                "league": league,
+                "state": "draft_complete",
+                "blue_team": detection["blue_team"],
+                "red_team": detection["red_team"],
+                "blue_picks": detection["blue_picks"],
+                "red_picks": detection["red_picks"]
+            }
+            logger.info(f"✅ Vision parsed complete draft: {detection['blue_team']} vs {detection['red_team']}")
+            self.process_match(match_data, is_dry_run=self.config.get("dry_run", True))
+            return match_data
+        else:
+            logger.warning("Vision pipeline could not detect a complete 10-champion draft in the provided image.")
+            return None
+
+    def run_vision_stream_daemon(
+        self,
+        source: Optional[str] = None,
+        league: str = "PRO",
+        poll_interval: Optional[float] = None
+    ):
+        """
+        Launches continuous autonomous vision monitoring over a live stream or screen.
+        """
+        stream_src = source or self.vision_config.get("default_source", "screen")
+        interval = poll_interval or self.vision_config.get("poll_interval_seconds", 2.5)
+        
+        logger.info(f"Starting Autonomous Vision Stream Daemon on '{stream_src}' for {league}...")
+        self.vision_pipeline.grabber.source = stream_src
+        self.vision_pipeline.start_stream_monitoring(
+            league=league,
+            poll_interval_seconds=interval
+        )
 
 

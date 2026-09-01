@@ -33,3 +33,21 @@ target_leagues:
   - "WLDs"
   - "EWC"
 
+# Autonomous Stream Vision & Draft OCR Ingestion
+vision:
+  enabled: true
+  default_source: "screen"          # "screen", "youtube", "twitch", or direct stream URL
+  monitor_index: 1                  # Monitor index for screen capture (1 = Primary)
+  poll_interval_seconds: 2.5        # Seconds between frame captures during draft monitoring
+  stability_count: 2                # Consecutive identical detection frames before lock-in
+  youtube_channels:
+    LCK: "https://www.youtube.com/@LCKglobal/live"
+    LPL: "https://www.youtube.com/@LPLEnglish/live"
+    LEC: "https://www.youtube.com/@LEC/live"
+    LCS: "https://www.youtube.com/@LCS/live"
+  twitch_channels:
+    LCK: "https://www.twitch.tv/lck"
+    LPL: "https://www.twitch.tv/lpl"
+    LEC: "https://www.twitch.tv/lec"
+    LCS: "https://www.twitch.tv/lcs"
+
