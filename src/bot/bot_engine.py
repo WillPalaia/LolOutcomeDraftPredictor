@@ -255,7 +255,22 @@ class DraftBotEngine:
                 )
                 logger.info(f"🚨 [BET PLACED] Wagered ${stake:,.2f} on {res['blue_team'] if rec_side == 'Blue' else res['red_team']} vs {res['red_team'] if rec_side == 'Blue' else res['blue_team']} @ {target_odds:.2f} (EV: +{target_ev*100:.2f}%)")
         else:
-            logger.info(f"Match {match_id} ({res['blue_team']} vs {res['red_team']}): PASS / No +EV edge (EV Blue: {res['ev_blue']*100:+.2f}%, EV Red: {res['ev_red']*100:+.2f}%). Webhook kept silent.")
+            logger.info(f"Match {match_id} ({res['blue_team']} vs {res['red_team']}): PASS / No +EV edge (EV Blue: {res['ev_blue']*100:+.2f}%, EV Red: {res['ev_red']*100:+.2f}%).")
+            if self.config.get("notify_on_pass", True) and not self.config.get("only_notify_on_bet", False):
+                self.notifier.send_pass_notification(
+                    match_id=match_id,
+                    league=res["league"],
+                    blue_team=res["blue_team"],
+                    red_team=res["red_team"],
+                    blue_picks=res["blue_picks"],
+                    red_picks=res["red_picks"],
+                    p_final_blue=res["p_final_blue"],
+                    market_odds_blue=res["market_odds_blue"],
+                    market_odds_red=res["market_odds_red"],
+                    ev_blue=res["ev_blue"],
+                    ev_red=res["ev_red"],
+                    ev_threshold=ev_thresh
+                )
 
     def run_poll_cycle(self):
         logger.info("Polling live schedules & matches...")
@@ -363,17 +378,37 @@ class DraftBotEngine:
                 stability_count=self.vision_config.get("stability_count", 2),
                 on_draft_locked=self.on_vision_draft_locked
             )
-            if not pipeline.grabber.open():
-                logger.warning(f"Could not connect to live stream for {league} ({stream_url}). Will retry next cycle.")
-                return
-                
             interval = self.vision_config.get("poll_interval_seconds", 2.5)
-            logger.info(f"👁️ Vision Monitor scanning {league} broadcast stream autonomously...")
+            logger.info(f"👁️ Vision Monitor worker started for {league} ({stream_url}). Waiting for broadcast to go live...")
+            
+            connected = False
+            retry_count = 0
+            
             try:
                 while not stop_event.is_set():
+                    if not connected:
+                        if pipeline.grabber.open():
+                            connected = True
+                            logger.info(f"✅ Live broadcast stream connected for {league}! Actively scanning for draft locks...")
+                        else:
+                            retry_count += 1
+                            # Attempt alternative Twitch source if YouTube is offline
+                            if retry_count % 6 == 0:
+                                tw_map = self.vision_config.get("twitch_channels", {})
+                                for k, v in tw_map.items():
+                                    if k.upper() in league.upper():
+                                        if pipeline.grabber.source != v:
+                                            logger.info(f"Attempting fallback to Twitch channel for {league}: {v}")
+                                            pipeline.grabber.source = v
+                            time.sleep(10)
+                            continue
+
                     frame = pipeline.grabber.read_frame()
                     if frame is not None:
                         pipeline.check_frame_and_dispatch(frame, league=league)
+                    else:
+                        time.sleep(1)
+                        
                     time.sleep(interval)
             except Exception as e:
                 logger.error(f"Error in Vision Monitor worker for {league}: {e}")
@@ -433,7 +468,23 @@ class DraftBotEngine:
         Starts the 24/7 autonomous daemon with schedule polling and live stream auto-discovery.
         """
         logger.info(f"Starting 24/7 Autonomous Draft Bot Daemon (Interval: {poll_interval_seconds}s)...")
-        logger.info("Discord notifications configured for BET PLACEMENT & CRITICAL ERRORS ONLY.")
+        
+        # Send Discord Startup confirmation ping
+        if self.config.get("notify_on_startup", True) and self.notifier.is_configured():
+            summary = self.portfolio.get_portfolio_summary()
+            target_str = ", ".join(self.config.get("target_leagues", ["LCK", "LPL", "LEC", "LCS"]))
+            self.notifier.send_system_status(
+                title="LoL +EV Draft Bot Online & Monitoring 🟢",
+                message=(
+                    f"**Daemon Status:** Running 24/7 with Autonomous Vision Stream Ingestion\n"
+                    f"**Current Bankroll:** `${summary['bankroll']:,.2f}` | **Mode:** `{'Paper Trading' if self.config.get('dry_run', True) else 'Live Trading'}`\n"
+                    f"**Target Leagues:** `{target_str}`\n"
+                    f"**Strategy:** Min `+{self.config.get('ev_threshold', 0.025)*100:.1f}%` EV Edge | `{self.config.get('kelly_fraction', 0.20)*100:.0f}%` Fractional Kelly\n"
+                    f"**Notifications:** Trade Alerts, Draft PASS Summaries, and Critical Errors active."
+                ),
+                color=0x2ECC71
+            )
+
         while True:
             try:
                 self.run_poll_cycle()

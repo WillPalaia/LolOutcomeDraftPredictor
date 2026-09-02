@@ -192,11 +192,59 @@ class DiscordNotifier:
         }
         return self.send_embed(embed)
 
+    def send_pass_notification(
+        self,
+        match_id: str,
+        league: str,
+        blue_team: str,
+        red_team: str,
+        blue_picks: Dict[str, str],
+        red_picks: Dict[str, str],
+        p_final_blue: float,
+        market_odds_blue: float,
+        market_odds_red: float,
+        ev_blue: float,
+        ev_red: float,
+        ev_threshold: float
+    ) -> bool:
+        """
+        Sends an informational embed when a draft is analyzed but neither team meets the +EV betting threshold.
+        """
+        color = 0x95A5A6  # Gray
+        b_picks_str = f"🛡️ **Top:** {blue_picks.get('top', '-')}\n🌿 **Jng:** {blue_picks.get('jng', '-')}\n⚡ **Mid:** {blue_picks.get('mid', '-')}\n🏹 **Bot:** {blue_picks.get('bot', '-')}\n💖 **Sup:** {blue_picks.get('sup', '-')}"
+        r_picks_str = f"🛡️ **Top:** {red_picks.get('top', '-')}\n🌿 **Jng:** {red_picks.get('jng', '-')}\n⚡ **Mid:** {red_picks.get('mid', '-')}\n🏹 **Bot:** {red_picks.get('bot', '-')}\n💖 **Sup:** {red_picks.get('sup', '-')}"
+
+        embed = {
+            "title": f"⚖️ [DRAFT EVALUATED — PASS] {blue_team} vs {red_team} ({league.upper()})",
+            "description": (
+                f"**Match:** `{blue_team} (Blue)` vs `{red_team} (Red)` | **League:** `{league.upper()}`\n"
+                f"**Decision:** ✋ **PASS / NO VALUE** (No side has +{ev_threshold*100:.1f}% EV edge)\n"
+                f"• **Blue ({blue_team}):** Win: `{p_final_blue*100:.1f}%` | Odds: `{market_odds_blue:.2f}` | EV: `{ev_blue*100:+.2f}%`\n"
+                f"• **Red ({red_team}):** Win: `{(1.0-p_final_blue)*100:.1f}%` | Odds: `{market_odds_red:.2f}` | EV: `{ev_red*100:+.2f}%`\n"
+                f"• **Status:** Draft analyzed live. Zero risk taken."
+            ),
+            "color": color,
+            "fields": [
+                {"name": f"🔵 {blue_team} (Blue Side)", "value": b_picks_str, "inline": True},
+                {"name": f"🔴 {red_team} (Red Side)", "value": r_picks_str, "inline": True}
+            ],
+            "footer": {"text": f"LoL +EV Quantitative Engine • Match ID: {match_id}"},
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        }
+        return self.send_embed(embed)
+
     def send_system_status(self, title: str, message: str, color: int = 0x3498DB) -> bool:
         """
-        Suppresses general bot operational status embeds so user only gets messages on actual bets.
+        Sends operational status updates and heartbeats to Discord.
         """
         logger.info(f"[SYSTEM STATUS]: {title} - {message}")
-        return True
+        embed = {
+            "title": f"🟢 [BOT STATUS] {title}",
+            "description": message,
+            "color": color,
+            "footer": {"text": "LoL Draft +EV Autonomous Daemon • Health Monitor"},
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        }
+        return self.send_embed(embed)
 
 

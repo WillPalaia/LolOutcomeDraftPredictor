@@ -17,9 +17,11 @@ side_bias_elo: 35.0       # Dynamic Blue-side advantage rating
 # Safety Circuit Breakers
 max_daily_drawdown_pct: 10.0  # Pause trading if daily drawdown exceeds 10%
 
-# Notification Settings (Strictly bets-only)
-only_notify_on_bet: true
-notify_on_startup: false
+# Notification Settings
+only_notify_on_bet: false       # False = also send draft evaluation summaries & startup pings
+notify_on_pass: true            # Send embed when a draft is evaluated but no +EV edge meets the threshold
+notify_on_startup: true         # Send status alert when bot starts up
+notify_daily_heartbeat: true    # Send periodic health check embed
 
 # Polling & Leagues to Monitor
 poll_interval_seconds: 30
@@ -36,18 +38,22 @@ target_leagues:
 # Autonomous Stream Vision & Draft OCR Ingestion
 vision:
   enabled: true
-  default_source: "screen"          # "screen", "youtube", "twitch", or direct stream URL
+  default_source: "auto"            # "auto", "youtube", "twitch", or "screen"
   monitor_index: 1                  # Monitor index for screen capture (1 = Primary)
   poll_interval_seconds: 2.5        # Seconds between frame captures during draft monitoring
   stability_count: 2                # Consecutive identical detection frames before lock-in
   youtube_channels:
     LCK: "https://www.youtube.com/@LCKglobal/live"
-    LPL: "https://www.youtube.com/@LPLEnglish/live"
+    LPL: "https://www.youtube.com/@lolesports/live"
     LEC: "https://www.youtube.com/@LEC/live"
     LCS: "https://www.youtube.com/@LCS/live"
+    WORLDS: "https://www.youtube.com/@lolesports/live"
+    MSI: "https://www.youtube.com/@lolesports/live"
   twitch_channels:
     LCK: "https://www.twitch.tv/lck"
     LPL: "https://www.twitch.tv/lpl"
     LEC: "https://www.twitch.tv/lec"
     LCS: "https://www.twitch.tv/lcs"
+    WORLDS: "https://www.twitch.tv/riotgames"
+    MSI: "https://www.twitch.tv/riotgames"
 
