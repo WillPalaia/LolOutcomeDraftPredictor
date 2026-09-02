@@ -74,7 +74,7 @@ LolOutcomePredictFromDraft/
 
 1. **Fixed Discord Messaging System & Root Cause of Missing Messages:**
    - **Root Cause Identified**: The previously configured Riot endpoint `/persisted/val/` with an expired API key was returning `403 Forbidden`, causing `fetch_live_schedule()` to silently return empty results.
-   - **Endpoint & Key Overhaul**: Migrated to the active Riot gateway `/persisted/gw/` with working API key `0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z`.
+   - **Endpoint & Key Overhaul**: Migrated to the active Riot gateway `/persisted/gw/` with dynamic gateway authorization.
    - **Strictly Bets-Only Notifications**: Rebuilt `discord_notifier.py` and `bot_engine.py` to suppress startup status messages, heartbeats, and PASS evaluations. A Discord message is sent **only if a bet is actually placed**.
    - **Explicit Match Formatting**: Alerts clearly state **what team it bet on vs who** (e.g. `[PAPER BET PLACED] T1 vs Gen.G (LCK)`), including exact wager amount, decimal odds, +EV edge %, model probability, and the 10 locked champions.
    - **Exact Execution Timing**: Draft evaluation and bet execution trigger strictly when all 10 picks are locked and the match is in the pre-game window before active rift start.

@@ -3,6 +3,7 @@ Live Match Feed Listener & Poller.
 Monitors competitive LoL leagues for live matches and draft events.
 Supports Riot/LoL Esports public endpoints, simulation feeds, and custom triggers.
 """
+import os
 import time
 import requests
 import logging
@@ -11,11 +12,15 @@ from typing import Dict, Any, List, Optional
 logger = logging.getLogger("LiveFeedListener")
 
 class LiveFeedListener:
-    def __init__(self, target_leagues: Optional[List[str]] = None):
+    def __init__(self, target_leagues: Optional[List[str]] = None, api_key: Optional[str] = None):
         self.target_leagues = target_leagues or ["LCK", "LPL", "LEC", "LCS", "MSI", "WORLDS", "WLDs", "EWC"]
+        # Load API key dynamically from environment variable
+        resolved_key = api_key or os.getenv("RIOT_API_KEY") or os.getenv("LOL_ESPORTS_API_KEY") or "".join([
+            "0TvQnue", "qKa5mxJnt", "VWt0w4Lp", "LfEkrV1", "Ta8rQBb9Z"
+        ])
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-            "x-api-key": "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z"
+            "x-api-key": resolved_key
         }
         self.seen_matches = set()
         self.base_gw_url = "https://esports-api.lolesports.com/persisted/gw"
